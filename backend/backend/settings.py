@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'accounts',
     'restaurants',
+    'orders',
+    'rest_framework.authtoken',
     
 ]
 
@@ -129,3 +131,8 @@ STATIC_URL = 'static/'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ]
+}

@@ -1,0 +1,37 @@
+.favorites-container{
+    padding:40px 80px;
+    min-height:100vh;
+    background:#fafafa;
+}
+
+.favorites-title{
+    text-align:center;
+    width:100%;
+    font-size:36px;
+    font-weight:bold;
+    color:#222;
+    margin:0 auto 50px;
+}
+
+.favorite-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:30px;
+    justify-items:center;
+}
+
+@media(max-width:900px){
+    .favorite-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+    .favorites-container{
+        padding:20px;
+    }
+
+    .favorite-grid{
+        grid-template-columns:1fr;
+    }
+}

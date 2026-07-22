@@ -1,86 +1,124 @@
-import { useEffect, useState } from "react";
-import api from "../services/api";
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import RestaurantCard from "../components/RestaurantCard";
+import { useNavigate } from "react-router-dom";
 import "../styles/Home.css";
 
 function Home() {
-  const [restaurants, setRestaurants] = useState([]);
-  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    api
-      .get("restaurants/")
-      .then((response) => {
-        console.log("API Response:", response.data);
-        setRestaurants(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching restaurants:", error);
-      });
-  }, []);
-
-  const filteredRestaurants = restaurants.filter((restaurant) =>
-    restaurant.name.toLowerCase().includes(search.toLowerCase())
-  );
-  console.log("Restaurants:", restaurants);
-  console.log("Filtered:", filteredRestaurants);
+  const navigate = useNavigate();
 
   return (
-    <>
-      <Navbar />
-      <Hero />
 
-      <div style={{ padding: "60px 40px" }}>
-        <h2
-          style={{
-            textAlign: "center",
-            marginBottom: "20px",
-            fontSize: "32px",
-          }}
-        >
-          Restaurants
-        </h2>
+    <div className="home">
 
-        <div style={{ textAlign: "center", marginBottom: "30px" }}>
-          <input
-            type="text"
-            placeholder="🔍 Search Restaurant..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{
-              width: "500px",
-              padding: "12px",
-              fontSize: "16px",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-            }}
+
+      {/* Hero Section */}
+
+      <section className="hero">
+
+
+        {/* Left Image */}
+
+        <div className="hero-image">
+
+          <img
+            src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg"
+            alt="Food"
           />
+
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            flexWrap: "wrap",
-            gap: "25px",
-          }}
-        >
-          {filteredRestaurants.length > 0 ? (
-            filteredRestaurants.map((restaurant) => (
-              <RestaurantCard
-                key={restaurant.id}
-                restaurant={restaurant}
-              />
-            ))
-          ) : (
-            <h3>No restaurants found.</h3>
-          )}
+
+
+        {/* Right Content */}
+
+        <div className="hero-content">
+
+
+          <h1>
+            Delicious Food 
+            <br />
+            Delivered To Your Door
+          </h1>
+
+
+          <div className="food-icon">
+            
+          </div>
+
+
+
+          <p>
+            Discover the best restaurants near you.
+            Order your favourite food and enjoy
+            fast delivery at your doorstep.
+          </p>
+
+
+
+          <button
+            onClick={() => navigate("/restaurants")}
+          >
+            Explore Restaurants 🍴
+          </button>
+
+
+
+          <div className="features">
+
+
+            <div className="feature-card">
+
+              <span>
+                🚀
+              </span>
+
+              <h3>
+                Fast Delivery
+              </h3>
+
+            </div>
+
+
+
+            <div className="feature-card">
+
+              <span>
+                🍽️
+              </span>
+
+              <h3>
+                Best Restaurants
+              </h3>
+
+            </div>
+
+
+
+            <div className="feature-card">
+
+              <span>
+                🔒
+              </span>
+
+              <h3>
+                Secure Payment
+              </h3>
+
+            </div>
+
+
+          </div>
+
+
         </div>
-      </div>
-    </>
+
+
+      </section>
+
+
+    </div>
+
   );
 }
+
 
 export default Home;

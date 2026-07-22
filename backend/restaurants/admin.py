@@ -1,27 +1,31 @@
 from django.contrib import admin
-from .models import Restaurant, MenuItem
+from .models import Restaurant, MenuItem, Favorite
 
 
 @admin.register(Restaurant)
 class RestaurantAdmin(admin.ModelAdmin):
-    list_display = (
+    list_display = [
         "name",
-        "owner_name",
-        "city",
-        "phone",
         "rating",
-        "is_active",
-    )
-    search_fields = ("name", "city", "owner_name")
-    list_filter = ("city", "is_active")
+        "delivery_time",
+        "cuisine",
+        "offer"
+    ]
 
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
-    list_display = (
+    list_display = [
         "name",
         "restaurant",
-        "price",
-    )
-    search_fields = ("name",)
-    list_filter = ("restaurant",)
+        "price"
+    ]
+
+
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = [
+        "user",
+        "restaurant",
+        "created_at"
+    ]

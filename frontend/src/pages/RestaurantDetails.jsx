@@ -1,184 +1,523 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
-import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { toast } from "react-toastify";
+import "../styles/RestaurantDetails.css";
+
 
 function RestaurantDetails() {
+
   const { id } = useParams();
 
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
+  const [addedItems, setAddedItems] = useState([]);
+  const [reviews, setReviews] = useState([]);
+
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+
   const { addToCart } = useContext(CartContext);
 
-  useEffect(() => {
-    // Fetch restaurant details
-    api
-      .get(`restaurants/${id}/`)
-      .then((response) => {
-        setRestaurant(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching restaurant:", error);
-      });
 
-    // Fetch menu items
-    api
-      .get(`restaurants/${id}/menu/`)
-      .then((response) => {
-        setMenuItems(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching menu:", error);
-      });
-  }, [id]);
 
-  if (!restaurant) {
-    return <h2 style={{ textAlign: "center" }}>Loading...</h2>;
+  useEffect(()=>{
+
+
+    api.get(`restaurants/${id}/`)
+    .then(res=>setRestaurant(res.data))
+    .catch(err=>console.log(err));
+
+
+
+    api.get(`restaurants/${id}/menu/`)
+    .then(res=>setMenuItems(res.data))
+    .catch(err=>console.log(err));
+
+
+
+    api.get(`restaurants/${id}/reviews/`)
+    .then(res=>setReviews(res.data))
+    .catch(err=>console.log(err));
+
+
+  },[id]);
+
+
+
+
+
+  const handleReview = async()=>{
+
+
+    const token = localStorage.getItem("token");
+
+
+    if(!token){
+
+      toast.warning("Please login first");
+      return;
+
+    }
+
+
+
+    try{
+
+
+      await api.post(
+
+        `restaurants/${id}/add-review/`,
+
+        {
+          rating,
+          comment
+        },
+
+        {
+          headers:{
+            Authorization:`Token ${token}`
+          }
+        }
+
+      );
+
+
+      toast.success("Review Added ⭐");
+
+
+      const response = await api.get(
+        `restaurants/${id}/reviews/`
+      );
+
+
+      setReviews(response.data);
+
+
+      setRating(5);
+      setComment("");
+
+
+    }
+    catch(error){
+
+      console.log(error);
+
+      toast.error("Failed to add review");
+
+    }
+
+
+  };
+
+
+
+
+
+  if(!restaurant){
+
+    return <LoadingSpinner/>;
+
   }
 
+
+
+
+
   return (
-    <div
-      style={{
-        maxWidth: "1100px",
-        margin: "40px auto",
-        padding: "20px",
-      }}
-    >
-      {/* Restaurant Details */}
 
-      <img
-        src={restaurant.image}
-        alt={restaurant.name}
-        style={{
-          width: "100%",
-          height: "400px",
-          objectFit: "cover",
-          borderRadius: "12px",
-        }}
-      />
+<div className="restaurant-details-page">
 
-      <h1>{restaurant.name}</h1>
 
-      <p>
-        <strong>⭐ Rating:</strong> {restaurant.rating}
-      </p>
 
-      <p>
-        <strong>👤 Owner:</strong> {restaurant.owner_name}
-      </p>
+{/* Restaurant Details */}
 
-      <p>
-        <strong>📍 City:</strong> {restaurant.city}
-      </p>
 
-      <p>
-        <strong>📧 Email:</strong> {restaurant.email}
-      </p>
+<img
 
-      <p>
-        <strong>📞 Phone:</strong> {restaurant.phone}
-      </p>
+src={restaurant.image}
 
-      <p>
-        <strong>🏠 Address:</strong> {restaurant.address}
-      </p>
+alt={restaurant.name}
 
-      <hr style={{ margin: "40px 0" }} />
+className="restaurant-banner"
 
-      {/* Menu */}
+/>
 
-      <h2 style={{ marginBottom: "25px" }}>🍽 Our Menu</h2>
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "25px",
-          justifyContent: "center",
-        }}
-      >
-        {menuItems.map((item) => (
-          <div
-            key={item.id}
-            style={{
-              width: "250px",
-              border: "1px solid #ddd",
-              borderRadius: "12px",
-              overflow: "hidden",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              style={{
-                width: "100%",
-                height: "180px",
-                objectFit: "cover",
-              }}
-            />
 
-            <div
-              style={{
-                padding: "15px",
-                display: "flex",
-                flexDirection: "column",
-                flex: 1,
-              }}
-            >
-              <h3
-                style={{
-                  minHeight: "30px",
-                  marginBottom: "10px",
-                }}
-              >
-                {item.name}
-              </h3>
 
-              <p
-                style={{
-                  minHeight: "50px",
-                  color: "#555",
-                  marginBottom: "10px",
-                }}
-              >
-                {item.description}
-              </p>
+<div className="restaurant-info">
 
-              <h3
-                style={{
-                  color: "#ff5722",
-                  marginBottom: "15px",
-                }}
-              >
-                ₹ {item.price}
-              </h3>
 
-              <button
-                onClick={() => addToCart(item)}
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  background: "#ff5722",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontSize: "16px",
-                  marginTop: "auto",
-                }}
-              >
-                Add to Cart
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+<h1 className="restaurant-name">
+
+{restaurant.name}
+
+</h1>
+
+
+
+<p>⭐ Rating: {restaurant.rating}</p>
+
+
+<p>👤 Owner: {restaurant.owner_name}</p>
+
+
+<p>📍 City: {restaurant.city}</p>
+
+
+<p>📧 Email: {restaurant.email}</p>
+
+
+<p>📞 Phone: {restaurant.phone}</p>
+
+
+<p>🏠 Address: {restaurant.address}</p>
+
+
+
+</div>
+
+
+
+
+
+{/* Menu */}
+
+
+
+<h2 className="menu-title">
+
+🍽 Our Menu
+
+</h2>
+
+
+
+
+<div className="menu-grid">
+
+
+
+{
+
+menuItems.map(item=>(
+
+
+<div
+
+key={item.id}
+
+className="menu-card"
+
+
+>
+
+
+<img
+
+src={item.image}
+
+alt={item.name}
+
+className="menu-image"
+
+/>
+
+
+
+<h3>
+
+{item.name}
+
+</h3>
+
+
+
+<p>
+
+{item.description}
+
+</p>
+
+
+
+
+<h3>
+
+₹ {item.price}
+
+</h3>
+
+
+
+
+
+<button
+
+className={
+addedItems.includes(item.id)
+?
+"add-btn added"
+:
+"add-btn"
 }
+
+
+onClick={()=>{
+
+
+addToCart(item);
+
+
+setAddedItems(prev=>[
+
+...prev,
+
+item.id
+
+]);
+
+
+}}
+
+>
+
+
+{
+
+addedItems.includes(item.id)
+
+?
+
+"✅ Added"
+
+:
+
+"Add to Cart"
+
+}
+
+
+</button>
+
+
+
+</div>
+
+
+))
+
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+{/* Add Review */}
+
+
+
+<div className="restaurant-info">
+
+
+<h2>
+
+⭐ Customer Reviews
+
+</h2>
+
+
+
+<select
+
+value={rating}
+
+onChange={(e)=>setRating(Number(e.target.value))}
+
+>
+
+
+<option value="5">
+⭐⭐⭐⭐⭐
+</option>
+
+<option value="4">
+⭐⭐⭐⭐
+</option>
+
+<option value="3">
+⭐⭐⭐
+</option>
+
+<option value="2">
+⭐⭐
+</option>
+
+<option value="1">
+⭐
+</option>
+
+
+</select>
+
+
+
+
+
+<textarea
+
+className="review-textarea"
+
+placeholder="Write your review..."
+
+value={comment}
+
+onChange={(e)=>setComment(e.target.value)}
+
+/>
+
+
+
+
+
+<button
+
+className="review-btn"
+
+onClick={handleReview}
+
+>
+
+Submit Review
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+{/* Reviews List */}
+
+
+
+<h2 className="menu-title">
+
+All Reviews
+
+</h2>
+
+
+
+
+{
+
+reviews.length===0
+
+?
+
+(
+
+<div className="review-card">
+
+<h3>
+
+⭐ No Reviews Yet
+
+</h3>
+
+
+<p>
+
+Be the first customer to review this restaurant!
+
+</p>
+
+
+</div>
+
+)
+
+
+:
+
+
+reviews.map(review=>(
+
+
+<div
+
+key={review.id}
+
+className="review-card"
+
+>
+
+
+<h3>
+
+{review.username}
+
+</h3>
+
+
+<p>
+
+{"⭐".repeat(review.rating)}
+
+</p>
+
+
+<p>
+
+{review.comment}
+
+</p>
+
+
+<small>
+
+{new Date(review.created_at)
+.toLocaleString()}
+
+</small>
+
+
+
+</div>
+
+
+
+))
+
+
+}
+
+
+
+
+</div>
+
+
+);
+
+
+}
+
+
 
 export default RestaurantDetails;

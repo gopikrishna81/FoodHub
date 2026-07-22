@@ -1,0 +1,27 @@
+.notfound-container {
+  text-align: center;
+  padding: 80px;
+}
+
+.notfound-container h1 {
+  font-size: 80px;
+  color: #ff5722;
+}
+
+.notfound-container h2 {
+  font-size: 32px;
+}
+
+.notfound-container p {
+  color: #666;
+  margin: 20px;
+}
+
+.home-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background: #ff5722;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+}

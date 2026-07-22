@@ -1,0 +1,226 @@
+.cart-container {
+    padding: 40px 20px;
+    background: #f8f8f8;
+    min-height: 100vh;
+}
+
+.cart-container h1 {
+    text-align: center;
+    font-size: 34px;
+    margin-bottom: 35px;
+    color: #222;
+}
+
+/* Empty Cart */
+
+.empty-cart {
+    max-width: 700px;
+    margin: 80px auto;
+    background: #fff;
+    padding: 50px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.empty-cart h2 {
+    margin-bottom: 15px;
+}
+
+.empty-cart p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.empty-cart button {
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.empty-cart button:hover {
+    background: #e64a19;
+}
+
+/* Cart Items */
+
+.cart-items {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.cart-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.cart-card img {
+    width: 160px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.cart-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cart-details h2 {
+    margin: 0;
+    color: #222;
+}
+
+.restaurant-name {
+    color: #777;
+    margin: 0;
+}
+
+.item-price {
+    font-size: 17px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.quantity-title {
+    font-weight: bold;
+    margin: 0;
+}
+
+.quantity-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.quantity-box button {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    background: #ff5722;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.quantity-box button:hover {
+    background: #e64a19;
+}
+
+.quantity-box span {
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+.item-total {
+    color: #ff5722;
+    font-size: 18px;
+    margin: 0;
+}
+
+.remove-btn {
+    width: 120px;
+    padding: 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background: #b52a37;
+}
+
+/* Bill Summary */
+
+.bill-box {
+    width: 100%;
+    max-width: 900px;
+    margin: 35px auto 0;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    box-sizing: border-box;
+}
+
+.bill-box h2 {
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.bill-box div {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    font-size: 17px;
+}
+
+.bill-box hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+.bill-box button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.bill-box button:hover {
+    background: #e64a19;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .cart-container {
+        padding: 20px;
+    }
+
+    .cart-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .cart-card img {
+        width: 100%;
+        height: 220px;
+    }
+
+    .quantity-box {
+        justify-content: center;
+    }
+
+    .remove-btn {
+        width: 100%;
+    }
+}
