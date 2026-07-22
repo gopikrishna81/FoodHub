@@ -25,8 +25,12 @@ SECRET_KEY = 'django-insecure-7p-$8dbplq5$5v^#!i%p5y#o9!tu57n1rcpb4**!xkpky(&b7%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+import os
 
+ALLOWED_HOSTS = os.getenv(
+    "ALLOWED_HOSTS",
+    "localhost,127.0.0.1,foodhub-backend-z40u.onrender.com"
+).split(",")
 
 # Application definition
 
